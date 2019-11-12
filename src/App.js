@@ -1,24 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+// import './App.css';
+import './App.scss';
+
+import Header from './components/Header';
+import SearchText from './components/SearchText';
+import EmptyState from './components/EmptyState';
+import SectionResult from './components/SectionResult';
+
+import junkFoodList from './junk-food-list';
 
 function App() {
+  /* States */
+  const [result, setResult] = useState({});
+
+  /* Methods */
+  const setItemToResult = item => {
+    const resultToSet = junkFoodList.find(food => food.id === item.id);
+    setResult(resultToSet);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+
+      <SearchText setItemToResult={setItemToResult} />
+      {!result.id && <EmptyState />}
+      {result.id && <SectionResult result={result} />}
+      
     </div>
   );
 }
